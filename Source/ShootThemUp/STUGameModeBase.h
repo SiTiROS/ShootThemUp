@@ -13,9 +13,7 @@ UCLASS()
 class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
-protected:
 
-	virtual void BeginPlay() override;
-
+public:
+    ASTUGameModeBase();
 };
