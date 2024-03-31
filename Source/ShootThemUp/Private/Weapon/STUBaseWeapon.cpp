@@ -2,8 +2,7 @@
 
 #include "Weapon/STUBaseWeapon.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "Engine.h"
-#include "DrawDebugHelpers.h"
+#include "Engine/World.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/Controller.h"
 
@@ -22,7 +21,8 @@ void ASTUBaseWeapon::BeginPlay()
 	Super::BeginPlay();
 
 	check(WeaponMesh);
-    
+    checkf(DefaultAmmo.Bullets > 0, TEXT("Bullets count couldn't be less or equal zero"));
+    checkf(DefaultAmmo.Clips > 0, TEXT("Bullets count couldn't be less or equal zero"));
     CurrentAmmo = DefaultAmmo;
 }
 
