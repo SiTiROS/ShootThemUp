@@ -7,7 +7,7 @@
 #include "STUCoreTypes.h"
 #include "STUHealthComponent.generated.h"
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SHOOTTHEMUP_API USTUHealthComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -15,13 +15,16 @@ class SHOOTTHEMUP_API USTUHealthComponent : public UActorComponent
 public:	
 	USTUHealthComponent();
 
-	float GetHealth() const { return Health;}
+    FOnDeathSignature OnDeath;
+    FOnHealthChangedSignature OnHealthChanged;
 
 	UFUNCTION(BlueprintCallable, Category = "Health")
     bool IsDead() const { return FMath::IsNearlyZero(Health); }
 
-	FOnDeathSignature OnDeath;
-    FOnHealthChangedSignature OnHealthChanged;
+    UFUNCTION(BlueprintCallable, Category = "Health")
+    float GetHealthPercent() const { return Health / MaxHealth; }
+
+    float GetHealth() const { return Health; }
 
 protected:
 
