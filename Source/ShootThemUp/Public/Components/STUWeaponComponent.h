@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "STUBaseWeapon.h"
 #include "Components/ActorComponent.h"
 #include "STUCoreTypes.h"
 #include "STUWeaponComponent.generated.h"
@@ -23,7 +22,8 @@ public:
     void NextWeapon();
     void Reload();
 
-    bool GetWeaponUIData(FWeaponUIData& UIData) const;
+    bool GetCurrentWeaponUIData(FWeaponUIData& UIData) const;
+    bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
 
 protected:
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
