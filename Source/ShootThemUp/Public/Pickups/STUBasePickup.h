@@ -25,12 +25,17 @@ protected:
 
 	virtual void BeginPlay() override;
     virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+    virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 
 public:	
 	virtual void Tick(float DeltaTime) override;
 
 private:
+    UPROPERTY()
+    TArray<APawn*> OverlappingPawns;
+
     virtual bool GivePickupTo(APawn* PlayerPawn);
+    
 
     void PickupWasTaken();
     void Respawn();
