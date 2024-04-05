@@ -1,18 +1,15 @@
 // ShootThemUp Game, All Rights Reserved.
 
-
 #include "Components/STUHealthComponent.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
-
 
 DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All);
 
 USTUHealthComponent::USTUHealthComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-
 }
 
 void USTUHealthComponent::BeginPlay()
@@ -51,9 +48,8 @@ void USTUHealthComponent::OnTakeAnyDamage(
 void USTUHealthComponent::HealUpdate() 
 {
     SetHealth(Health + HealModifier);
-   
 
-    if (FMath::IsNearlyEqual(Health, MaxHealth) && GetWorld())
+    if (IsHealthFull() && GetWorld())
     {
         GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
     }
@@ -63,4 +59,17 @@ void USTUHealthComponent::SetHealth(float NewHealth)
 {
     Health = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
     OnHealthChanged.Broadcast(Health);
+}
+
+bool USTUHealthComponent::TryToAddHealth(float HealthAmount)
+{
+    if (IsDead() || IsHealthFull()) return false;
+
+    SetHealth(Health + HealthAmount);
+    return true;
+}
+
+bool USTUHealthComponent::IsHealthFull() const
+{
+    return FMath::IsNearlyEqual(Health, MaxHealth);
 }
