@@ -84,11 +84,12 @@ void ASTUBasePickup::PickupWasTaken()
 void ASTUBasePickup::Respawn()
 {
     GenerateRotationYaw();
-    CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+
     if (GetRootComponent())
     {
         GetRootComponent()->SetVisibility(true, true);
     }
+    CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 }
 
 void ASTUBasePickup::GenerateRotationYaw()
