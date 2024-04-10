@@ -5,22 +5,24 @@
 #include "Engine/World.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/Controller.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseWeapon, All, All);
 
 ASTUBaseWeapon::ASTUBaseWeapon()
 {
-	PrimaryActorTick.bCanEverTick = false;
-	
-	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>("WeaponMesh");
+    PrimaryActorTick.bCanEverTick = false;
+
+    WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>("WeaponMesh");
     SetRootComponent(WeaponMesh);
 }
 
 void ASTUBaseWeapon::BeginPlay()
 {
-	Super::BeginPlay();
+    Super::BeginPlay();
 
-	check(WeaponMesh);
+    check(WeaponMesh);
     checkf(DefaultAmmo.Bullets > 0, TEXT("Bullets count couldn't be less or equal zero"));
     checkf(DefaultAmmo.Clips > 0, TEXT("Bullets count couldn't be less or equal zero"));
     CurrentAmmo = DefaultAmmo;
@@ -40,7 +42,7 @@ APlayerController* ASTUBaseWeapon::GetPlayerController() const
     return Player->GetController<APlayerController>();
 }
 
-bool ASTUBaseWeapon::GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const 
+bool ASTUBaseWeapon::GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const
 {
     const auto Controller = GetPlayerController();
     if (!Controller) return false;
@@ -49,16 +51,16 @@ bool ASTUBaseWeapon::GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRot
     return true;
 }
 
-FVector ASTUBaseWeapon::GetMuzzleWorldLocation() const 
+FVector ASTUBaseWeapon::GetMuzzleWorldLocation() const
 {
     return WeaponMesh->GetSocketLocation(MuzzleSocketName);
 }
 
-bool ASTUBaseWeapon::GetTraceData(FVector& TraceStart, FVector& TraceEnd) const 
+bool ASTUBaseWeapon::GetTraceData(FVector& TraceStart, FVector& TraceEnd) const
 {
     FVector ViewLocation;
     FRotator ViewRotation;
-    if(!GetPlayerViewPoint(ViewLocation, ViewRotation)) return false;
+    if (!GetPlayerViewPoint(ViewLocation, ViewRotation)) return false;
 
     TraceStart = ViewLocation;
     const FVector ShootDirection = ViewRotation.Vector();
@@ -66,7 +68,7 @@ bool ASTUBaseWeapon::GetTraceData(FVector& TraceStart, FVector& TraceEnd) const
     return true;
 }
 
-void ASTUBaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd) 
+void ASTUBaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd)
 {
     if (!GetWorld()) return;
 
@@ -85,7 +87,7 @@ void ASTUBaseWeapon::DecreaseAmmo()
         return;
     }
     CurrentAmmo.Bullets--;
-    //LogAmmo();
+    // LogAmmo();
 
     if (IsClipEmpty() && !IsAmmoEmpty())
     {
@@ -119,7 +121,7 @@ void ASTUBaseWeapon::ChangeClip()
     UE_LOG(LogBaseWeapon, Display, TEXT("------- Change Clip ------- "));
 }
 
-bool ASTUBaseWeapon::CanReload() const 
+bool ASTUBaseWeapon::CanReload() const
 {
     return CurrentAmmo.Bullets < DefaultAmmo.Bullets && CurrentAmmo.Clips > 0;
 }
@@ -169,4 +171,14 @@ bool ASTUBaseWeapon::TryToAddAmmo(int32 ClipsAmount)
     }
 
     return true;
+}
+
+UNiagaraComponent* ASTUBaseWeapon::SpawnMuzzleFX()
+{
+    return UNiagaraFunctionLibrary::SpawnSystemAttached(MuzzleFX,  //
+        WeaponMesh,                                                //
+        MuzzleSocketName,                                          //
+        FVector::ZeroVector,                                       //
+        FRotator::ZeroRotator,                                     //
+        EAttachLocation::SnapToTarget, true);
 }

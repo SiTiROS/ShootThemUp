@@ -8,19 +8,21 @@
 #include "STUBaseWeapon.generated.h"
 
 class USkeletalMeshComponent;
+class UNiagaraSystem;
+class UNiagaraComponent;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseWeapon : public AActor
 {
-	GENERATED_BODY()
-	
-public:	
-	ASTUBaseWeapon();
+    GENERATED_BODY()
+
+public:
+    ASTUBaseWeapon();
 
     FOnClipEmptySignature OnClipEmpty;
 
-	virtual void StartFire();
-	virtual void StopFire();
+    virtual void StartFire();
+    virtual void StopFire();
 
     void ChangeClip();
     bool CanReload() const;
@@ -46,15 +48,18 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
     FWeaponUIData UIData;
 
-	virtual void BeginPlay() override;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+    UNiagaraSystem* MuzzleFX;
 
-	virtual void MakeShot();
+    virtual void BeginPlay() override;
+
+    virtual void MakeShot();
     virtual bool GetTraceData(FVector& TraceStart, FVector& TraceEnd) const;
 
     APlayerController* GetPlayerController() const;
     bool GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const;
     FVector GetMuzzleWorldLocation() const;
-    
+
     void MakeHit(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd);
 
     void DecreaseAmmo();
@@ -64,6 +69,8 @@ protected:
 
     void LogAmmo();
 
-    private:
+    UNiagaraComponent* SpawnMuzzleFX();
+
+private:
     FAmmoData CurrentAmmo;
 };
