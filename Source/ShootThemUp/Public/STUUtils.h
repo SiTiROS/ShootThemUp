@@ -3,12 +3,12 @@
 class STUUtils
 {
 public:
-	template<typename T>
+    template <typename T>
     static T* GetSTUPlayerComponent(AActor* PlayerPawn)
-	{
-	    if (!PlayerPawn) return nullptr;
+    {
+        if (!PlayerPawn) return nullptr;
 
         const auto Component = PlayerPawn->GetComponentByClass(T::StaticClass());
         return Cast<T>(Component);
-	}
+    }
 };

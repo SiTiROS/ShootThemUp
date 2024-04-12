@@ -20,13 +20,13 @@ AActor* USTUAIPerceptionComponent::GetClosestEnemy() const
 
     float BestDistance = MAX_FLT;
     AActor* BestPawn = nullptr;
-    for(const auto PerceiveActor: PerceiveActors)
+    for (const auto PerceiveActor : PerceiveActors)
     {
         const auto HealthComponent = STUUtils::GetSTUPlayerComponent<USTUHealthComponent>(PerceiveActor);
-        if(HealthComponent && !HealthComponent->IsDead()) // TODO: check if enemies or not
+        if (HealthComponent && !HealthComponent->IsDead())  // TODO: check if enemies or not
         {
             const auto CurrentDistance = (PerceiveActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
-            if(CurrentDistance < BestDistance)
+            if (CurrentDistance < BestDistance)
             {
                 BestDistance = CurrentDistance;
                 BestPawn = PerceiveActor;
