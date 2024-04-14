@@ -11,30 +11,32 @@ class USphereComponent;
 UCLASS()
 class SHOOTTHEMUP_API ASTUBasePickup : public AActor
 {
-	GENERATED_BODY()
-	
-public:	
-	ASTUBasePickup();
+    GENERATED_BODY()
+
+public:
+    ASTUBasePickup();
 
 protected:
     UPROPERTY(VisibleAnywhere, Category = "Pickup")
     USphereComponent* CollisionComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
     float RespawnTime = 5.0f;
 
-	virtual void BeginPlay() override;
+    virtual void BeginPlay() override;
     virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
     virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 
-public:	
-	virtual void Tick(float DeltaTime) override;
+public:
+    virtual void Tick(float DeltaTime) override;
+    bool CouldBeTaken() const;
 
 private:
     UPROPERTY()
     TArray<APawn*> OverlappingPawns;
 
     float RotationYaw = 0.0f;
+    FTimerHandle RespawnTimerHandle;
 
     virtual bool GivePickupTo(APawn* PlayerPawn);
 
