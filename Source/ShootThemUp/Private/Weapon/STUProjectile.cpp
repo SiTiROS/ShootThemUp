@@ -9,16 +9,16 @@
 
 ASTUProjectile::ASTUProjectile()
 {
-	PrimaryActorTick.bCanEverTick = false;
+    PrimaryActorTick.bCanEverTick = false;
 
-	CollisionComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
+    CollisionComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
     CollisionComponent->InitSphereRadius(5.0f);
     CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
     CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
     CollisionComponent->bReturnMaterialOnMove = true;
     SetRootComponent(CollisionComponent);
 
-	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent");
+    MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent");
     MovementComponent->InitialSpeed = 2000.0f;
     MovementComponent->ProjectileGravityScale = 0.0f;
 
@@ -27,9 +27,9 @@ ASTUProjectile::ASTUProjectile()
 
 void ASTUProjectile::BeginPlay()
 {
-	Super::BeginPlay();
+    Super::BeginPlay();
 
-	check(MovementComponent);
+    check(MovementComponent);
     check(CollisionComponent);
     check(WeaponFXComponent);
 
@@ -43,7 +43,7 @@ void ASTUProjectile::OnProjectileHit(
     UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
     if (!GetWorld()) return;
-    
+
     MovementComponent->StopMovementImmediately();
 
     // make damage
@@ -52,12 +52,12 @@ void ASTUProjectile::OnProjectileHit(
         GetActorLocation(),                          //
         DamageRadius,                                //
         UDamageType::StaticClass(),                  //
-        {GetOwner()},                             //
+        {GetOwner()},                                //
         this,                                        //
         GetController(),                             //
         DoFullDamage);
 
-    //DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Red, false, 5.0f);
+    // DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Red, false, 5.0f);
     WeaponFXComponent->PlayImpactFX(Hit);
     Destroy();
 }
