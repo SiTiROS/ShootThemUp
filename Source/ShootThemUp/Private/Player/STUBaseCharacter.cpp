@@ -147,3 +147,11 @@ void ASTUBaseCharacter::OnGroundLanded(const FHitResult& Hit)
 
     UE_LOG(LogBaseCharacter, Display, TEXT("Player %s received Landed damage: %f"), *GetName(), FinalDamage);
 }
+
+void ASTUBaseCharacter::SetPlayerColor(const FLinearColor& Color)
+{
+    const auto MaterialInst = GetMesh()->CreateAndSetMaterialInstanceDynamic(0);
+    if (!MaterialInst) return;
+
+    MaterialInst->SetVectorParameterValue(MaterialColorName, Color);
+}
