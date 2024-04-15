@@ -27,7 +27,7 @@ void ASTUGameModeBase::StartPlay()
 
 UClass* ASTUGameModeBase::GetDefaultPawnClassForController_Implementation(AController* InController)
 {
-    if(InController && InController->IsA<AAIController>())
+    if (InController && InController->IsA<AAIController>())
     {
         return AIPawnClass;
     }
@@ -58,13 +58,14 @@ void ASTUGameModeBase::GameTimerUpdate()
 {
     UE_LOG(LogSTUGameModeBase, Display, TEXT("Time: %i / Round: %i/%i"), RoundCountDown, CurrentRound, GameData.RoundsNum);
 
-    if(--RoundCountDown == 0)
+    if (--RoundCountDown == 0)
     {
         GetWorldTimerManager().ClearTimer(GameRoundTimerHandle);
 
-        if(CurrentRound + 1 <= GameData.RoundsNum)
+        if (CurrentRound + 1 <= GameData.RoundsNum)
         {
             ++CurrentRound;
+            ResetPlayers();
             StartRound();
         }
         else
@@ -72,4 +73,23 @@ void ASTUGameModeBase::GameTimerUpdate()
             UE_LOG(LogSTUGameModeBase, Display, TEXT("============ GAME OVER ============"));
         }
     }
+}
+
+void ASTUGameModeBase::ResetPlayers()
+{
+    if (!GetWorld()) return;
+
+    for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
+    {
+        ResetOnePlayer(It->Get());
+    }
+}
+
+void ASTUGameModeBase::ResetOnePlayer(AController* Controller)
+{
+    if (Controller && Controller->GetPawn())
+    {
+        Controller->GetPawn()->Reset();
+    }
+    RestartPlayer(Controller);
 }
