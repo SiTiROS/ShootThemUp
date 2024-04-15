@@ -1,6 +1,7 @@
 // ShootThemUp Game, All Rights Reserved.
 
 #include "Components/STUHealthComponent.h"
+#include "STUUtils.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/Controller.h"
@@ -34,6 +35,17 @@ void USTUHealthComponent::OnTakeAnyDamage(
     AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
     if (Damage <= 0.0f || IsDead() || !GetWorld()) return;
+
+    // Friendly Damage
+    if(InstigatedBy)
+    {
+        const auto Pawn = Cast<APawn>(GetOwner());
+        if (!Pawn) return;
+
+        const auto AreEnemies = STUUtils::AreEnemies(Pawn->Controller, InstigatedBy);
+        if (!AreEnemies) return;
+    }
+    // 
 
     SetHealth(Health - Damage);
     GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
