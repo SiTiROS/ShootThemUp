@@ -31,6 +31,8 @@ void ASTUGameModeBase::StartPlay()
 
     CurrentRound = 1;
     StartRound();
+
+    SetMatchState(ESTUMatchState::InProgress);
 }
 
 UClass* ASTUGameModeBase::GetDefaultPawnClassForController_Implementation(AController* InController)
@@ -64,7 +66,7 @@ void ASTUGameModeBase::StartRound()
 
 void ASTUGameModeBase::GameTimerUpdate()
 {
-    //UE_LOG(LogSTUGameModeBase, Display, TEXT("Time: %i / Round: %i/%i"), RoundCountDown, CurrentRound, GameData.RoundsNum);
+    // UE_LOG(LogSTUGameModeBase, Display, TEXT("Time: %i / Round: %i/%i"), RoundCountDown, CurrentRound, GameData.RoundsNum);
 
     if (--RoundCountDown == 0)
     {
@@ -204,12 +206,22 @@ void ASTUGameModeBase::GameOver()
     UE_LOG(LogSTUGameModeBase, Display, TEXT("============ GAME OVER ============"));
     LogPlayerInfo();
 
-    for (auto Pawn: TActorRange<APawn>(GetWorld()))
+    for (auto Pawn : TActorRange<APawn>(GetWorld()))
     {
-        if(Pawn)
+        if (Pawn)
         {
             Pawn->TurnOff();
             Pawn->DisableInput(nullptr);
         }
     }
+
+    SetMatchState(ESTUMatchState::GameOver);
+}
+
+void ASTUGameModeBase::SetMatchState(ESTUMatchState State)
+{
+    if (MatchState == State) return;
+
+    MatchState = State;
+    OnMatchStateChanged.Broadcast(MatchState);
 }
