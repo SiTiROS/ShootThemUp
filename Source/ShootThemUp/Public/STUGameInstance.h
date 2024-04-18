@@ -10,4 +10,11 @@ UCLASS()
 class SHOOTTHEMUP_API USTUGameInstance : public UGameInstance
 {
     GENERATED_BODY()
+
+public:
+    FName GetStartupLevelName() const { return StartupLevelName; }
+
+protected:
+    UPROPERTY(EditDefaultsOnly, Category = "UI")
+    FName StartupLevelName = NAME_None;
 };
