@@ -49,7 +49,7 @@ void USTUMenuWidget::InitLevelItems()
         LevelItemWidgets.Add(LevelItemWidget);
     }
 
-    if (STUGameInstance->GetStartupLevel().LevelName.IsNone())
+    if (STUGameInstance->GetStartupLevel().LevelName.IsNull())
     {
         OnLevelSelected(STUGameInstance->GetLevelsData()[0]);
     }
@@ -81,7 +81,7 @@ void USTUMenuWidget::OnStartGame()
     const auto STUGameInstance = GetSTUGameInstance();
     if (!STUGameInstance) return;
 
-    UGameplayStatics::OpenLevel(this, STUGameInstance->GetStartupLevel().LevelName);
+    UGameplayStatics::OpenLevel(this, FName(*STUGameInstance->GetStartupLevel().LevelName.GetAssetName()));
 }
 
 void USTUMenuWidget::OnQuitGame()

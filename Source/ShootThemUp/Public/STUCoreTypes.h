@@ -125,7 +125,7 @@ struct FLevelData
     GENERATED_USTRUCT_BODY()
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game")
-    FName LevelName = NAME_None;
+    TSoftObjectPtr<UWorld> LevelName;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game")
     FName LevelDisplayName = NAME_None;
