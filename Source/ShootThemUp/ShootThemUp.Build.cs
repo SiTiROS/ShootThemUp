@@ -4,11 +4,11 @@ using UnrealBuildTool;
 
 public class ShootThemUp : ModuleRules
 {
-	public ShootThemUp(ReadOnlyTargetRules Target) : base(Target)
-	{
-		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
-		PublicDependencyModuleNames.AddRange(new string[]
+    public ShootThemUp(ReadOnlyTargetRules Target) : base(Target)
+    {
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
+        PublicDependencyModuleNames.AddRange(new string[]
         {
             "Core",
             "CoreUObject",
@@ -20,13 +20,13 @@ public class ShootThemUp : ModuleRules
             "NavigationSystem"
         });
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+        PrivateDependencyModuleNames.AddRange(new string[] { });
 
-        PublicIncludePaths.AddRange(new string[] 
-        { 
-            "ShootThemUp/Public/Player", 
-            "ShootThemUp/Public/Components", 
-            "ShootThemUp/Public/Dev", 
+        PublicIncludePaths.AddRange(new string[]
+        {
+            "ShootThemUp/Public/Player",
+            "ShootThemUp/Public/Components",
+            "ShootThemUp/Public/Dev",
             "ShootThemUp/Public/Weapon",
             "ShootThemUp/Public/UI",
             "ShootThemUp/Public/Animations",
@@ -38,7 +38,8 @@ public class ShootThemUp : ModuleRules
             "ShootThemUP/Public/AI/EQS",
             "ShootThemUP/Public/AI/Decorators",
             "ShootThemUP/Public/Menu",
-            "ShootThemUP/Public/Menu/UI"
+            "ShootThemUP/Public/Menu/UI",
+            "ShootThemUP/Public/Sound"
         });
 
         // Uncomment if you are using Slate UI

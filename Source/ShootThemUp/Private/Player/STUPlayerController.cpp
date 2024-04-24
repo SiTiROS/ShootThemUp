@@ -3,6 +3,7 @@
 #include "Player/STUPlayerController.h"
 #include "Components/STURespawnComponent.h"
 #include "STUGameModeBase.h"
+#include "STUGameInstance.h"
 
 ASTUPlayerController::ASTUPlayerController()
 {
@@ -32,6 +33,7 @@ void ASTUPlayerController::OnMatchStateChanged(ESTUMatchState State)
     }
     else
     {
+        //SetInputMode(FInputModeGameAndUI().SetHideCursorDuringCapture(false));
         SetInputMode(FInputModeGameAndUI());
         bShowMouseCursor = true;
     }
@@ -42,7 +44,8 @@ void ASTUPlayerController::SetupInputComponent()
     Super::SetupInputComponent();
     if (!InputComponent) return;
 
-    InputComponent->BindAction("PauseGame", IE_Pressed, this, &ASTUPlayerController::OnPauseGame);
+    InputComponent->BindAction("PauseGame", IE_Pressed, this, &ASTUPlayerController::OnPauseGame).bExecuteWhenPaused = true;
+    InputComponent->BindAction("Mute", IE_Pressed, this, &ASTUPlayerController::OnMuteSound);
     // TODO: Need Unpause on repeat pressed key
 }
 
@@ -50,5 +53,16 @@ void ASTUPlayerController::OnPauseGame()
 {
     if (!GetWorld() || !GetWorld()->GetAuthGameMode()) return;
 
-    GetWorld()->GetAuthGameMode()->SetPause(this);
+    // GetWorld()->GetAuthGameMode()->SetPause(this);
+    SetPause(!IsPaused());
+}
+
+void ASTUPlayerController::OnMuteSound()
+{
+    if (!GetWorld()) return;
+
+    const auto STUGameInstance = GetWorld()->GetGameInstance<USTUGameInstance>();
+    if (!STUGameInstance) return;
+
+    STUGameInstance->ToggleVolume();
 }
