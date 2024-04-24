@@ -9,6 +9,8 @@
 #include "STUUTils.h"
 #include "Components/STURespawnComponent.h"
 #include "EngineUtils.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSTUGameModeBase, All, All);
 
@@ -33,6 +35,7 @@ void ASTUGameModeBase::StartPlay()
     StartRound();
 
     SetMatchState(ESTUMatchState::InProgress);
+    UGameplayStatics::PlaySound2D(GetWorld(), StartRoundSound);
 }
 
 UClass* ASTUGameModeBase::GetDefaultPawnClassForController_Implementation(AController* InController)
@@ -77,10 +80,12 @@ void ASTUGameModeBase::GameTimerUpdate()
             ++CurrentRound;
             ResetPlayers();
             StartRound();
+            UGameplayStatics::PlaySound2D(GetWorld(), StartRoundSound);
         }
         else
         {
             GameOver();
+            UGameplayStatics::PlaySound2D(GetWorld(), StopRoundSound);
         }
     }
 }
@@ -120,7 +125,7 @@ void ASTUGameModeBase::CreateTeamsInfo()
 
         PlayerState->SetTeamID(TeamID);
         PlayerState->SetTeamColor(DetermineColorByTeamID(TeamID));
-        PlayerState->SetPlayerName(Controller->IsPlayerController() ? "Player" : "Bot"); // TODO: Add Bot + It
+        PlayerState->SetPlayerName(Controller->IsPlayerController() ? "Player" : FString::Printf(TEXT("Bot %d"), It.GetIndex()));
         SetPlayerColor(Controller);
 
         TeamID = TeamID == 1 ? 2 : 1;
@@ -200,6 +205,11 @@ void ASTUGameModeBase::StartRespawn(AController* Controller)
 void ASTUGameModeBase::RespawnRequest(AController* Controller)
 {
     ResetOnePlayer(Controller);
+
+    if (Controller->IsPlayerController())
+    {
+        UGameplayStatics::PlaySound2D(GetWorld(), StartRoundSound);  // respawn in battle sound for only player
+    }
 }
 
 void ASTUGameModeBase::GameOver()

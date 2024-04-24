@@ -8,6 +8,7 @@
 #include "STUGameModeBase.generated.h"
 
 class AAIController;
+class USoundCue;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
@@ -28,7 +29,7 @@ public:
     int32 GetCurrentRoundNum() const { return CurrentRound; }
     int32 GetRoundSecondsRemaining() const { return RoundCountDown; }
 
-    void RespawnRequest(AController* Controller); 
+    void RespawnRequest(AController* Controller);
 
     virtual bool SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
     virtual bool ClearPause() override;
@@ -42,6 +43,12 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, Category = "Game")
     FGameData GameData;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+    USoundCue* StartRoundSound;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+    USoundCue* StopRoundSound;
 
 private:
     ESTUMatchState MatchState = ESTUMatchState::WaitingToStart;
