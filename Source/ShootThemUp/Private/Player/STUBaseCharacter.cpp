@@ -26,6 +26,7 @@ void ASTUBaseCharacter::BeginPlay()
     Super::BeginPlay();
 
     check(HealthComponent);
+    check(WeaponComponent);
     check(GetCharacterMovement());
     check(GetCapsuleComponent());
     check(GetMesh());

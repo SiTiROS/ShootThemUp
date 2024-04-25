@@ -5,8 +5,9 @@
 #include "Sound/SoundCue.h"
 #include "Kismet/GameplayStatics.h"
 
-void ASTULauncherWeapon::StartFire() 
+void ASTULauncherWeapon::StartFire()
 {
+    Super::StartFire();
     MakeShot();
 }
 
@@ -41,4 +42,7 @@ void ASTULauncherWeapon::MakeShot()
     DecreaseAmmo();
     SpawnMuzzleFX();
     UGameplayStatics::SpawnSoundAttached(FireSound, WeaponMesh, MuzzleSocketName);
+
+    // just for setting IsFiring to false
+    StopFire();
 }

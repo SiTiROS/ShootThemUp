@@ -24,6 +24,7 @@ public:
 
     virtual void StartFire();
     virtual void StopFire();
+    bool IsFiring() const;
 
     void ChangeClip();
     bool CanReload() const;
@@ -58,6 +59,8 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
     USoundCue* FireSound;
+
+    bool FireInProgress = false;
 
     virtual void BeginPlay() override;
 
