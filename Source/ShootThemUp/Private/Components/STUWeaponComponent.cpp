@@ -101,12 +101,14 @@ void USTUWeaponComponent::StartFire()
 {
     if (!CanFire()) return;
     CurrentWeapon->StartFire();
+    bFiring = true;
 }
 
 void USTUWeaponComponent::StopFire()
 {
     if (!CurrentWeapon) return;
     CurrentWeapon->StopFire();
+    bFiring = false;
 }
 
 bool USTUWeaponComponent::IsFiring() const
@@ -168,6 +170,10 @@ void USTUWeaponComponent::OnReloadFinished(USkeletalMeshComponent* MeshComp)
     if (!Character || MeshComp != Character->GetMesh()) return;
 
     ReloadAnimInProgress = false;
+    if (bFiring)
+    {
+        StartFire();
+    }
 }
 
 bool USTUWeaponComponent::CanFire() const

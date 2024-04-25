@@ -79,4 +79,5 @@ private:
 
     void OnClipEmpty(ASTUBaseWeapon* ClipEmptyWeapon);
     void ChangeClip();
+    bool bFiring;
 };
