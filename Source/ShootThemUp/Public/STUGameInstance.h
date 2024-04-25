@@ -15,8 +15,8 @@ class SHOOTTHEMUP_API USTUGameInstance : public UGameInstance
     GENERATED_BODY()
 
 public:
-    FLevelData GetStartupLevel() const { return StartupLevel; }
-    void SetStartupLevel(const FLevelData& Data) { StartupLevel = Data; }
+    FLevelData GetStartupLevelData() const { return StartupLevelData; }
+    void SetStartupLevelData(const FLevelData& Data) { StartupLevelData = Data; }
 
     TArray<FLevelData> GetLevelsData() const { return LevelsData; }
 
@@ -35,5 +35,5 @@ protected:
     USoundClass* MasterSoundClass;
 
 private:
-    FLevelData StartupLevel;
+    FLevelData StartupLevelData;
 };

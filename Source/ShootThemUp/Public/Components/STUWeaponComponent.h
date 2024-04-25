@@ -76,6 +76,6 @@ private:
 
     bool CanReload() const;
 
-    void OnEmptyClip(ASTUBaseWeapon* AmmoEmptyWeapon);
+    void OnClipEmpty(ASTUBaseWeapon* ClipEmptyWeapon);
     void ChangeClip();
 };

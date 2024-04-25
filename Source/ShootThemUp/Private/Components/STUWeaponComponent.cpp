@@ -51,7 +51,7 @@ void USTUWeaponComponent::SpawnWeapons()
         auto Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(OneWeaponData.WeaponClass);
         if (!Weapon) continue;
 
-        Weapon->OnClipEmpty.AddUObject(this, &USTUWeaponComponent::OnEmptyClip);
+        Weapon->OnClipEmpty.AddUObject(this, &USTUWeaponComponent::OnClipEmpty);
         Weapon->SetOwner(Character);
         Weapons.Add(Weapon);
 
@@ -188,11 +188,11 @@ void USTUWeaponComponent::Reload()
     ChangeClip();
 }
 
-void USTUWeaponComponent::OnEmptyClip(ASTUBaseWeapon* AmmoEmptyWeapon)
+void USTUWeaponComponent::OnClipEmpty(ASTUBaseWeapon* ClipEmptyWeapon)
 {
-    if (!AmmoEmptyWeapon) return;
+    if (!ClipEmptyWeapon) return;
 
-    if (CurrentWeapon == AmmoEmptyWeapon)
+    if (CurrentWeapon == ClipEmptyWeapon)
     {
         ChangeClip();
     }
@@ -200,7 +200,7 @@ void USTUWeaponComponent::OnEmptyClip(ASTUBaseWeapon* AmmoEmptyWeapon)
     {
         for (const auto Weapon : Weapons)
         {
-            if (Weapon == AmmoEmptyWeapon)
+            if (Weapon == ClipEmptyWeapon)
             {
                 Weapon->ChangeClip();
             }

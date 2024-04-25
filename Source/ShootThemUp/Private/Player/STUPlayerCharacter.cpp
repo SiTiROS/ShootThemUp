@@ -57,8 +57,7 @@ void ASTUPlayerCharacter::CheckCameraOverlap()
 
     for (auto MeshChild : MeshChildren)
     {
-        const auto MeshChildGeometry = Cast<UPrimitiveComponent>(MeshChild);
-        if (MeshChildGeometry)
+        if (const auto MeshChildGeometry = Cast<UPrimitiveComponent>(MeshChild))
         {
             MeshChildGeometry->SetOwnerNoSee(HideMesh);
         }

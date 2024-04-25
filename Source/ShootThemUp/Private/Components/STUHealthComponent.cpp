@@ -40,21 +40,22 @@ void USTUHealthComponent::OnTakePointDamage(AActor* DamagedActor, float Damage, 
     AActor* DamageCauser)
 {
     const auto FinalDamage = Damage * GetPointDamageModifier(DamagedActor, BoneName);
-    UE_LOG(LogHealthComponent, Display, TEXT("On point damage: %f, final damage: %f, bone: %s"), Damage, FinalDamage, *BoneName.ToString());
+    // UE_LOG(LogHealthComponent, Display, TEXT("On point damage: %f, final damage: %f, bone: %s"), Damage, FinalDamage,
+    // *BoneName.ToString());
     ApplyDamage(FinalDamage, InstigatedBy);
 }
 
 void USTUHealthComponent::OnTakeRadialDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, FVector Origin,
     const FHitResult& HitInfo, class AController* InstigatedBy, AActor* DamageCauser)
 {
-    UE_LOG(LogHealthComponent, Display, TEXT("On radial damage: %f"), Damage);
+    // UE_LOG(LogHealthComponent, Display, TEXT("On radial damage: %f"), Damage);
     ApplyDamage(Damage, InstigatedBy);
 }
 
 void USTUHealthComponent::OnTakeAnyDamage(
     AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-    UE_LOG(LogHealthComponent, Display, TEXT("On any damage: %f"), Damage);
+    // UE_LOG(LogHealthComponent, Display, TEXT("On any damage: %f"), Damage);
 }
 
 void USTUHealthComponent::ApplyDamage(float Damage, AController* InstigatedBy)

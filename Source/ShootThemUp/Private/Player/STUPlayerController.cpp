@@ -16,8 +16,7 @@ void ASTUPlayerController::BeginPlay()
 
     if (GetWorld())
     {
-        const auto GameMode = Cast<ASTUGameModeBase>(GetWorld()->GetAuthGameMode());
-        if (GameMode)
+        if (const auto GameMode = Cast<ASTUGameModeBase>(GetWorld()->GetAuthGameMode()))
         {
             GameMode->OnMatchStateChanged.AddUObject(this, &ASTUPlayerController::OnMatchStateChanged);
         }
@@ -33,7 +32,7 @@ void ASTUPlayerController::OnMatchStateChanged(ESTUMatchState State)
     }
     else
     {
-        //SetInputMode(FInputModeGameAndUI().SetHideCursorDuringCapture(false));
+        // SetInputMode(FInputModeGameAndUI().SetHideCursorDuringCapture(false));
         SetInputMode(FInputModeGameAndUI());
         bShowMouseCursor = true;
     }

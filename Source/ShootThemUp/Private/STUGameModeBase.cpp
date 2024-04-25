@@ -8,6 +8,7 @@
 #include "Player/STUPlayerState.h"
 #include "STUUTils.h"
 #include "Components/STURespawnComponent.h"
+#include "Components/STUWeaponComponent.h"
 #include "EngineUtils.h"
 #include "Sound/SoundCue.h"
 #include "Kismet/GameplayStatics.h"
@@ -242,6 +243,7 @@ bool ASTUGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDel
     const auto PauseSet = Super::SetPause(PC, CanUnpauseDelegate);
     if (PauseSet)
     {
+        StopAllFire();
         SetMatchState(ESTUMatchState::Pause);
     }
 
@@ -256,4 +258,16 @@ bool ASTUGameModeBase::ClearPause()
         SetMatchState(ESTUMatchState::InProgress);
     }
     return PauseCleared;
+}
+
+void ASTUGameModeBase::StopAllFire()
+{
+    for (auto Pawn : TActorRange<APawn>(GetWorld()))
+    {
+        const auto WeaponComponent = STUUtils::GetSTUPlayerComponent<USTUWeaponComponent>(Pawn);
+        if (!WeaponComponent) continue;
+
+        WeaponComponent->StopFire();
+        WeaponComponent->Zoom(false);
+    }
 }
